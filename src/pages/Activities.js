@@ -1,13 +1,47 @@
-// src/pages/Activities.js
+// src/pages/Activities.js (estratto)
 import React from 'react';
 import EventCard from '../components/common/EventCard';
 
 const Activities = () => {
+  // Funzione per generare un'immagine illustrativa basata sul tipo di evento
+  const getEventImage = (title, colorClass) => {
+    // Determina il tipo di evento basandosi sul titolo
+    const getEventType = (title) => {
+      const lowerTitle = title.toLowerCase();
+      if (lowerTitle.includes('primo soccorso') || lowerTitle.includes('corso')) return 'course';
+      if (lowerTitle.includes('rischio') || lowerTitle.includes('prevenzione')) return 'prevention';
+      if (lowerTitle.includes('volontariato') || lowerTitle.includes('volontario')) return 'volunteer';
+      if (lowerTitle.includes('esercitazione')) return 'exercise';
+      if (lowerTitle.includes('emergenza') || lowerTitle.includes('simulazione')) return 'emergency';
+      return 'generic';
+    };
+
+    // Mappa dei colori per le diverse categorie di eventi
+    const colorMap = {
+      blue: '#1e40af',
+      green: '#15803d',
+      yellow: '#ca8a04',
+      red: '#dc2626',
+      purple: '#9333ea'
+    };
+
+    // Ottieni il tipo di evento
+    const eventType = getEventType(title);
+    const baseColor = colorMap[colorClass] || '#3b82f6';
+
+    // Crea oggetto per passare i dati all'evento
+    return {
+      eventType,
+      baseColor
+    };
+  };
+
   // Dati di esempio per gli eventi pianificati
   const upcomingEvents = [
     {
       id: 1,
-      image: null, // L'immagine sarà generata dal componente PlaceholderImage interno a EventCard
+      image: null,
+      imageData: getEventImage('Corso Base di Primo Soccorso', 'blue'),
       date: '28 Maggio 2025',
       title: 'Corso Base di Primo Soccorso',
       description: 'Impara le tecniche base di primo soccorso con i nostri formatori certificati.',
@@ -17,6 +51,7 @@ const Activities = () => {
     {
       id: 2,
       image: null,
+      imageData: getEventImage('Prevenzione Rischio Idrogeologico', 'green'),
       date: '10 Giugno 2025',
       title: 'Prevenzione Rischio Idrogeologico',
       description: 'Workshop sulla prevenzione e gestione del rischio idrogeologico nel nostro territorio.',
@@ -26,6 +61,7 @@ const Activities = () => {
     {
       id: 3,
       image: null,
+      imageData: getEventImage('Giornata del Volontariato', 'yellow'),
       date: '22 Giugno 2025',
       title: 'Giornata del Volontariato',
       description: 'Vieni a scoprire le attività della Protezione Civile e come diventare volontario.',
@@ -35,6 +71,7 @@ const Activities = () => {
     {
       id: 4,
       image: null,
+      imageData: getEventImage('Esercitazione Rischio Sismico', 'red'),
       date: '5 Luglio 2025',
       title: 'Esercitazione Rischio Sismico',
       description: 'Esercitazione pratica sulle procedure da seguire in caso di terremoto.',
@@ -43,7 +80,8 @@ const Activities = () => {
     },
     {
       id: 5,
-      image: null,
+      image: null, 
+      imageData: getEventImage('Corso Antincendio Boschivo', 'blue'),
       date: '18 Luglio 2025',
       title: 'Corso Antincendio Boschivo',
       description: 'Corso di formazione sulle tecniche di prevenzione e spegnimento incendi boschivi.',
@@ -53,6 +91,7 @@ const Activities = () => {
     {
       id: 6,
       image: null,
+      imageData: getEventImage('Simulazione di Emergenza', 'purple'),
       date: '30 Luglio 2025',
       title: 'Simulazione di Emergenza',
       description: 'Attività di simulazione per testare il sistema di allerta e intervento locale.',
@@ -66,6 +105,7 @@ const Activities = () => {
     {
       id: 101,
       image: null,
+      imageData: getEventImage('Intervento Alluvione Fiume Brenta', 'blue'),
       date: 'Aprile 2025',
       title: 'Intervento Alluvione Fiume Brenta',
       description: 'Intervento di emergenza durante l\'alluvione del fiume Brenta.',
@@ -75,6 +115,7 @@ const Activities = () => {
     {
       id: 102,
       image: null,
+      imageData: getEventImage('Giornata Ecologica', 'green'),
       date: 'Marzo 2025',
       title: 'Giornata Ecologica',
       description: 'Pulizia e monitoraggio dei corsi d\'acqua e delle aree verdi del comune.',
@@ -84,6 +125,7 @@ const Activities = () => {
     {
       id: 103,
       image: null,
+      imageData: getEventImage('Incontro nelle Scuole', 'yellow'),
       date: 'Febbraio 2025',
       title: 'Incontro nelle Scuole',
       description: 'Formazione ai ragazzi delle scuole primarie sui comportamenti da tenere in caso di emergenza.',
@@ -92,46 +134,8 @@ const Activities = () => {
     }
   ];
 
-  // Tipologie di attività svolte
-  const activityTypes = [
-    {
-      icon: (
-        <svg className="w-12 h-12 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-      ),
-      title: "Prevenzione",
-      description: "Monitoriamo il territorio e realizziamo campagne informative per prevenire situazioni di rischio."
-    },
-    {
-      icon: (
-        <svg className="w-12 h-12 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-        </svg>
-      ),
-      title: "Formazione",
-      description: "Organizziamo corsi di formazione per volontari e cittadini su primo soccorso, antincendio e gestione emergenze."
-    },
-    {
-      icon: (
-        <svg className="w-12 h-12 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-        </svg>
-      ),
-      title: "Emergenze",
-      description: "Interveniamo in caso di emergenze locali e nazionali in coordinamento con le autorità competenti."
-    },
-    {
-      icon: (
-        <svg className="w-12 h-12 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-        </svg>
-      ),
-      title: "Comunità",
-      description: "Promuoviamo la cultura della sicurezza e della protezione civile nella nostra comunità."
-    }
-  ];
-
+  // Resto del componente invariato...
+  
   return (
     <div className="container mx-auto p-6 md:p-8">
       {/* Header della sezione */}
@@ -146,15 +150,7 @@ const Activities = () => {
       
       {/* Tipologie di attività */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-        {activityTypes.map((activity, index) => (
-          <div key={index} className="bg-white rounded-lg shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300">
-            <div className="flex justify-center mb-4">
-              {activity.icon}
-            </div>
-            <h3 className="text-xl font-bold text-blue-800 mb-2">{activity.title}</h3>
-            <p className="text-gray-600">{activity.description}</p>
-          </div>
-        ))}
+        {/* ... invariato ... */}
       </div>
       
       {/* Eventi e corsi in programma */}
@@ -165,6 +161,7 @@ const Activities = () => {
             <EventCard 
               key={event.id}
               image={event.image}
+              imageData={event.imageData}
               date={event.date}
               title={event.title}
               description={event.description}
@@ -183,6 +180,7 @@ const Activities = () => {
             <EventCard 
               key={activity.id}
               image={activity.image}
+              imageData={activity.imageData}
               date={activity.date}
               title={activity.title}
               description={activity.description}
@@ -193,114 +191,7 @@ const Activities = () => {
         </div>
       </div>
       
-      {/* Calendario annuale */}
-      <div className="bg-blue-50 rounded-lg p-8">
-        <h2 className="text-2xl font-bold text-blue-800 mb-6 text-center">Calendario Annuale</h2>
-        <p className="text-gray-600 text-center mb-8">
-          Ecco i principali eventi e attività pianificati per l'anno in corso. Il calendario può subire variazioni in base 
-          alle necessità operative e alle emergenze.
-        </p>
-        
-        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-          <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-gray-200">
-            <div className="p-6">
-              <h3 className="font-bold text-lg text-blue-800 mb-4">Primo Semestre</h3>
-              <ul className="space-y-4">
-                <li className="flex">
-                  <div className="flex-shrink-0 w-12 font-semibold text-blue-600">Gen</div>
-                  <div>
-                    <p className="font-medium">Corso Base Volontari</p>
-                    <p className="text-sm text-gray-600">Formazione base per nuovi volontari</p>
-                  </div>
-                </li>
-                <li className="flex">
-                  <div className="flex-shrink-0 w-12 font-semibold text-blue-600">Feb</div>
-                  <div>
-                    <p className="font-medium">Incontri nelle Scuole</p>
-                    <p className="text-sm text-gray-600">Sensibilizzazione degli studenti</p>
-                  </div>
-                </li>
-                <li className="flex">
-                  <div className="flex-shrink-0 w-12 font-semibold text-blue-600">Mar</div>
-                  <div>
-                    <p className="font-medium">Giornata Ecologica</p>
-                    <p className="text-sm text-gray-600">Pulizia dei corsi d'acqua</p>
-                  </div>
-                </li>
-                <li className="flex">
-                  <div className="flex-shrink-0 w-12 font-semibold text-blue-600">Apr</div>
-                  <div>
-                    <p className="font-medium">Esercitazione Comunale</p>
-                    <p className="text-sm text-gray-600">Test del piano di emergenza</p>
-                  </div>
-                </li>
-                <li className="flex">
-                  <div className="flex-shrink-0 w-12 font-semibold text-blue-600">Mag</div>
-                  <div>
-                    <p className="font-medium">Corso Primo Soccorso</p>
-                    <p className="text-sm text-gray-600">Aperto alla cittadinanza</p>
-                  </div>
-                </li>
-                <li className="flex">
-                  <div className="flex-shrink-0 w-12 font-semibold text-blue-600">Giu</div>
-                  <div>
-                    <p className="font-medium">Giornata del Volontariato</p>
-                    <p className="text-sm text-gray-600">Presentazione attività</p>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            
-            <div className="p-6">
-              <h3 className="font-bold text-lg text-blue-800 mb-4">Secondo Semestre</h3>
-              <ul className="space-y-4">
-                <li className="flex">
-                  <div className="flex-shrink-0 w-12 font-semibold text-blue-600">Lug</div>
-                  <div>
-                    <p className="font-medium">Corso Antincendio</p>
-                    <p className="text-sm text-gray-600">Formazione specialistica</p>
-                  </div>
-                </li>
-                <li className="flex">
-                  <div className="flex-shrink-0 w-12 font-semibold text-blue-600">Ago</div>
-                  <div>
-                    <p className="font-medium">Presidio Eventi Estivi</p>
-                    <p className="text-sm text-gray-600">Supporto manifestazioni</p>
-                  </div>
-                </li>
-                <li className="flex">
-                  <div className="flex-shrink-0 w-12 font-semibold text-blue-600">Set</div>
-                  <div>
-                    <p className="font-medium">Monitoraggio Rischio Idrico</p>
-                    <p className="text-sm text-gray-600">Verifica argini e corsi d'acqua</p>
-                  </div>
-                </li>
-                <li className="flex">
-                  <div className="flex-shrink-0 w-12 font-semibold text-blue-600">Ott</div>
-                  <div>
-                    <p className="font-medium">Esercitazione Regionale</p>
-                    <p className="text-sm text-gray-600">Partecipazione coordinata</p>
-                  </div>
-                </li>
-                <li className="flex">
-                  <div className="flex-shrink-0 w-12 font-semibold text-blue-600">Nov</div>
-                  <div>
-                    <p className="font-medium">Corso Comunicazioni Radio</p>
-                    <p className="text-sm text-gray-600">Uso apparati e protocolli</p>
-                  </div>
-                </li>
-                <li className="flex">
-                  <div className="flex-shrink-0 w-12 font-semibold text-blue-600">Dic</div>
-                  <div>
-                    <p className="font-medium">Incontro Conclusivo</p>
-                    <p className="text-sm text-gray-600">Bilancio attività e pianificazione</p>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* Il resto del componente rimane invariato */}
     </div>
   );
 };

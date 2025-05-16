@@ -13,21 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout repositoryname: Deploy to GitHub Pages
-
-on:
-  push:
-    branches: [ main ]
-  workflow_dispatch:
-
-permissions:
-  contents: write
-
-jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-    
-    steps:
       - name: Checkout repository
         uses: actions/checkout@v3
         
@@ -38,41 +23,14 @@ jobs:
           
       - name: Install dependencies
         run: npm install
-        
-      # Rimosso il fix per placeholder URL perché ora viene gestito internamente
-        
-      - name: Build project
-        run: npm run build
-        env:
-          CI: false
-          
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          folder: build
-          branch: gh-pages
-          clean: true
-        uses: actions/checkout@v3
-        
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-          
-      - name: Install dependencies
-        run: npm install
-        
-      - name: Fix placeholder image URLs
+      
+      # Manteniamo lo script che sistema i placeholder come fallback
+      # Nel caso in cui alcuni componenti non siano stati aggiornati
+      - name: Fix any remaining placeholder image URLs
         run: |
-          # Usa node per fare la sostituzione in modo più affidabile
-          node -e "
-            const fs = require('fs');
-            const appJsPath = './src/App.js';
-            let content = fs.readFileSync(appJsPath, 'utf8');
-            content = content.replace(/url\(('|\")\/api\/placeholder\//g, 'url($1https://via.placeholder.com/');
-            fs.writeFileSync(appJsPath, content);
-            console.log('Placeholder URLs updated');
-          "
+          # Cerca eventuali riferimenti a /api/placeholder/ e li sostituisce
+          find ./src -type f -name "*.js" -exec grep -l "/api/placeholder/" {} \; | xargs -I{} sed -i 's|url(\(['"'"'"]\)/api/placeholder/|url(\1https://via.placeholder.com/|g' {}
+          echo "Fixed any remaining placeholder URLs"
         
       - name: Build project
         run: npm run build
