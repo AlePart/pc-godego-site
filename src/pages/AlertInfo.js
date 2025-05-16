@@ -5,35 +5,46 @@ import AlertBadge from '../components/alerts/AlertBadge';
 import AlertCard from '../components/alerts/AlertCard';
 import AlertMap from '../components/alerts/AlertMap';
 import AlertTimeline from '../components/alerts/AlertTimeline';
+import { useAlerts } from '../contexts/AlertContext';
 
 const AlertInfo = () => {
   // Stato per filtrare le allerte
   const [filter, setFilter] = useState('current');
+  
+  // Utilizzo del context delle allerte
+  const { activeAlerts, systemAlertLevel, allAlerts } = useAlerts();
 
-  // Dati delle allerte attive (in un'applicazione reale, questi dati verrebbero da un'API)
-  const currentAlerts = [
-    {
-      id: 1,
-      level: 'yellow',
-      title: 'Allerta Gialla - Precipitazioni Intense',
-      description: 'Previste precipitazioni intense con possibili locali allagamenti nelle zone periferiche del comune.',
-      startDate: '2025-05-18T09:00:00',
-      endDate: '2025-05-19T09:00:00',
-      areas: ['Zona Sud', 'Zona Ovest'],
-      weatherType: 'rain',
-      instructions: 'Prestare attenzione in prossimità di canali e fossati. Evitare il transito in sottopassi.'
-    },
-    {
-      id: 2,
-      level: 'green',
-      title: 'Monitoraggio - Vento Forte',
-      description: 'Monitoraggio per raffiche di vento previste in serata nella zona collinare.',
-      startDate: '2025-05-17T18:00:00',
-      endDate: '2025-05-18T00:00:00',
-      areas: ['Zona Nord', 'Zona Collinare'],
-      weatherType: 'wind',
-      instructions: 'Nessuna precauzione particolare richiesta, situazione sotto controllo.'
+  // Funzione per filtrare le allerte
+  const getFilteredAlerts = () => {
+    if (filter === 'all') {
+      return allAlerts;
+    } else if (filter === 'current') {
+      return activeAlerts;
+    } else if (filter === 'historical') {
+      // Allerte storiche: quelle che non sono attive
+      const now = new Date();
+      return allAlerts.filter(alert => {
+        const endDate = new Date(alert.endDate);
+        return endDate < now;
+      });
+    } else if (['red', 'orange', 'yellow', 'green'].includes(filter)) {
+      return allAlerts.filter(alert => alert.level === filter);
     }
+    return allAlerts;
+  };
+
+  // Funzione per formattare la data
+  const formatDate = (dateString) => {
+    const options = { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' };
+    return new Date(dateString).toLocaleDateString('it-IT', options);
+  };
+
+  // Livelli di allerta e relativi colori
+  const alertLevels = [
+    { name: 'red', label: 'Rossa', color: 'bg-red-600', text: 'text-red-800', border: 'border-red-600', description: 'Elevata. Eventi eccezionali con danni e rischi per popolazione.' },
+    { name: 'orange', label: 'Arancione', color: 'bg-orange-500', text: 'text-orange-800', border: 'border-orange-500', description: 'Moderata. Eventi diffusi con potenziali danni.' },
+    { name: 'yellow', label: 'Gialla', color: 'bg-yellow-400', text: 'text-yellow-800', border: 'border-yellow-400', description: 'Ordinaria. Eventi localizzati ma intensi.' },
+    { name: 'green', label: 'Verde', color: 'bg-green-500', text: 'text-green-800', border: 'border-green-500', description: 'Monitoraggio. Assenza di fenomeni significativi.' }
   ];
 
   // Dati storici delle allerte passate
@@ -73,50 +84,87 @@ const AlertInfo = () => {
     }
   ];
 
-  // Funzione per filtrare le allerte
-  const getFilteredAlerts = () => {
-    if (filter === 'all') {
-      return [...currentAlerts, ...historicalAlerts];
-    } else if (filter === 'current') {
-      return currentAlerts;
-    } else if (filter === 'historical') {
-      return historicalAlerts;
-    } else if (filter === 'red') {
-      return [...currentAlerts, ...historicalAlerts].filter(alert => alert.level === 'red');
-    } else if (filter === 'orange') {
-      return [...currentAlerts, ...historicalAlerts].filter(alert => alert.level === 'orange');
-    } else if (filter === 'yellow') {
-      return [...currentAlerts, ...historicalAlerts].filter(alert => alert.level === 'yellow');
-    } else if (filter === 'green') {
-      return [...currentAlerts, ...historicalAlerts].filter(alert => alert.level === 'green');
-    }
-    return [...currentAlerts, ...historicalAlerts];
-  };
-
-  // Funzione per formattare la data
-  const formatDate = (dateString) => {
-    const options = { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' };
-    return new Date(dateString).toLocaleDateString('it-IT', options);
-  };
-
-  // Livelli di allerta e relativi colori
-  const alertLevels = [
-    { name: 'red', label: 'Rossa', color: 'bg-red-600', text: 'text-red-800', border: 'border-red-600', description: 'Elevata. Eventi eccezionali con danni e rischi per popolazione.' },
-    { name: 'orange', label: 'Arancione', color: 'bg-orange-500', text: 'text-orange-800', border: 'border-orange-500', description: 'Moderata. Eventi diffusi con potenziali danni.' },
-    { name: 'yellow', label: 'Gialla', color: 'bg-yellow-400', text: 'text-yellow-800', border: 'border-yellow-400', description: 'Ordinaria. Eventi localizzati ma intensi.' },
-    { name: 'green', label: 'Verde', color: 'bg-green-500', text: 'text-green-800', border: 'border-green-500', description: 'Monitoraggio. Assenza di fenomeni significativi.' }
-  ];
+  // Combina le allerte attive con quelle storiche per la visualizzazione
+  const combinedAlerts = [...getFilteredAlerts(), ...historicalAlerts];
 
   return (
     <div className="container mx-auto p-6 md:p-8">
-      {/* Header della sezione */}
+      {/* Header della sezione con badge stato generale */}
       <div className="mb-10 text-center">
-        <h1 className="text-3xl font-bold text-blue-800 mb-4">Sistema di Allerte</h1>
+        <div className="flex justify-center items-center mb-3">
+          <h1 className="text-3xl font-bold text-blue-800 mr-3">Sistema di Allerte</h1>
+          <AlertBadge level={systemAlertLevel} size="lg" />
+        </div>
         <div className="w-20 h-1 bg-yellow-500 mx-auto mb-6"></div>
         <p className="text-gray-600 max-w-3xl mx-auto">
           In questa pagina puoi trovare informazioni sulle allerte meteo in corso e passate nel territorio di Castello di Godego. 
           Il sistema di allerta è coordinato con la Protezione Civile Regionale e viene aggiornato regolarmente.
         </p>
+      </div>
+
+      {/* Riepilogo dello stato corrente del sistema di allerta */}
+      <div className="mb-8 bg-white shadow-lg rounded-lg overflow-hidden border border-gray-200">
+        <div className="p-6">
+          <h2 className="text-2xl font-bold text-blue-800 mb-4 flex items-center">
+            <svg className="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Stato Attuale del Sistema
+          </h2>
+          
+          <div className="flex flex-wrap md:flex-nowrap gap-4">
+            <div className={`flex-1 p-4 rounded-lg bg-opacity-10 border ${
+              systemAlertLevel === 'red' ? 'bg-red-100 border-red-200' :
+              systemAlertLevel === 'orange' ? 'bg-orange-100 border-orange-200' :
+              systemAlertLevel === 'yellow' ? 'bg-yellow-100 border-yellow-200' :
+              'bg-green-100 border-green-200'
+            }`}>
+              <div className="flex items-center mb-3">
+                <h3 className="text-lg font-semibold text-gray-800 mr-2">Livello di Allerta:</h3>
+                <AlertBadge level={systemAlertLevel} size="md" />
+              </div>
+              
+              <p className="text-gray-700">
+                {systemAlertLevel === 'red' ? 'Criticità elevata. Prestare massima attenzione e seguire le indicazioni delle autorità.' :
+                 systemAlertLevel === 'orange' ? 'Criticità moderata. Evitare le zone a rischio e limitare gli spostamenti non necessari.' :
+                 systemAlertLevel === 'yellow' ? 'Criticità ordinaria. Prestare attenzione e mantenersi informati sulle condizioni meteo.' :
+                 'Nessuna criticità in corso. Il sistema di monitoraggio è attivo.'}
+              </p>
+            </div>
+            
+            <div className="flex-1 p-4 rounded-lg bg-blue-50 border border-blue-200">
+              <h3 className="text-lg font-semibold text-gray-800 mb-3 flex items-center">
+                <svg className="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Allerte Attive:
+                {activeAlerts.length > 0 && (
+                  <span className="ml-2 bg-blue-600 text-white text-xs font-bold px-2 py-1 rounded-full">
+                    {activeAlerts.length}
+                  </span>
+                )}
+              </h3>
+              
+              {activeAlerts.length > 0 ? (
+                <ul className="space-y-2">
+                  {activeAlerts.map(alert => (
+                    <li key={alert.id} className="flex items-start space-x-2">
+                      <span className={`flex-shrink-0 w-3 h-3 mt-1 rounded-full ${
+                        alert.level === 'red' ? 'bg-red-600' :
+                        alert.level === 'orange' ? 'bg-orange-500' :
+                        alert.level === 'yellow' ? 'bg-yellow-400' :
+                        'bg-green-500'
+                      }`}></span>
+                      <span className="text-gray-700">{alert.title}</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-gray-700">Nessuna allerta attiva al momento.</p>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Sezione informativa sulle allerte */}
@@ -149,7 +197,7 @@ const AlertInfo = () => {
       {/* <div className="mb-12">
         <h2 className="text-2xl font-bold text-blue-800 mb-6">Mappa delle allerte in corso</h2>
         <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-          <AlertMap alerts={currentAlerts} />
+          <AlertMap alerts={activeAlerts} />
         </div>
       </div> */}
 
@@ -219,7 +267,7 @@ const AlertInfo = () => {
       {/* Timeline delle allerte */}
       <div className="mb-12">
         <h2 className="text-2xl font-bold text-blue-800 mb-6">Cronologia delle allerte</h2>
-        <AlertTimeline alerts={[...currentAlerts, ...historicalAlerts].sort((a, b) => new Date(b.startDate) - new Date(a.startDate))} />
+        <AlertTimeline alerts={combinedAlerts.sort((a, b) => new Date(b.startDate) - new Date(a.startDate))} />
       </div>
 
       {/* Consigli e comportamenti da seguire */}

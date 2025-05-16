@@ -2,8 +2,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import AlertBadge from '../alerts/AlertBadge';
+import { useAlerts } from '../../contexts/AlertContext';
 
-const AlertBanner = ({ level = 'green', message = 'Nessuna allerta in corso' }) => {
+const AlertBanner = () => {
+  // Utilizzo del context delle allerte
+  const { systemAlertLevel, getMainAlertMessage, activeAlerts } = useAlerts();
+  
+  // Descrizioni per i diversi livelli di allerta
   const alertLevels = {
     red: {
       description: 'Allerta di livello elevato. Condizioni meteorologiche molto pericolose.'
@@ -19,8 +24,8 @@ const AlertBanner = ({ level = 'green', message = 'Nessuna allerta in corso' }) 
     }
   };
 
-  const currentAlert = alertLevels[level] || alertLevels.green;
-  const customMessage = message || currentAlert.description;
+  // Ottieni il messaggio personalizzato dall'allerta attiva più importante
+  const message = getMainAlertMessage();
 
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden border border-orange-100">
@@ -30,13 +35,24 @@ const AlertBanner = ({ level = 'green', message = 'Nessuna allerta in corso' }) 
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
           </svg>
           Allerta Meteo
+          {activeAlerts.length > 0 && (
+            <span className="ml-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+              {activeAlerts.length}
+            </span>
+          )}
         </h3>
       </div>
       <div className="p-6">
         <div className="flex items-center mb-4">
-          <AlertBadge level={level} size="md" />
+          <AlertBadge level={systemAlertLevel} size="md" />
+          {systemAlertLevel !== 'green' && (
+            <span className="ml-3 inline-flex h-3 w-3">
+              <span className={`animate-ping absolute inline-flex h-3 w-3 rounded-full ${systemAlertLevel === 'red' ? 'bg-red-400' : systemAlertLevel === 'orange' ? 'bg-orange-400' : 'bg-yellow-400'} opacity-75`}></span>
+              <span className={`relative inline-flex rounded-full h-3 w-3 ${systemAlertLevel === 'red' ? 'bg-red-500' : systemAlertLevel === 'orange' ? 'bg-orange-500' : 'bg-yellow-500'}`}></span>
+            </span>
+          )}
         </div>
-        <p className="text-gray-600 mb-4">{customMessage}</p>
+        <p className="text-gray-600 mb-4">{message}</p>
         
         <div className="flex flex-wrap gap-2">
           <Link to="/allerte" className="text-white bg-blue-600 hover:bg-blue-700 font-medium rounded-md px-4 py-2 inline-flex items-center transition-colors duration-200">
@@ -46,7 +62,7 @@ const AlertBanner = ({ level = 'green', message = 'Nessuna allerta in corso' }) 
             </svg>
           </Link>
           
-          {level !== 'green' && (
+          {systemAlertLevel !== 'green' && (
             <a href="tel:112" className="text-white bg-red-600 hover:bg-red-700 font-medium rounded-md px-4 py-2 inline-flex items-center transition-colors duration-200">
               Emergenze: 112
               <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">

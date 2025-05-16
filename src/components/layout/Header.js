@@ -1,9 +1,11 @@
+// src/components/layout/Header.js - Versione CORRETTA
 import React from 'react';
 import Navbar from './Navbar';
+import AlertStatusBadge from '../alerts/AlertStatusBadge';
 
 const Header = () => {
   return (
-    <header className="relative z-10 bg-gradient-to-r from-blue-800 to-blue-600 text-white shadow-lg">
+    <header className="relative z-20 bg-gradient-to-r from-blue-800 to-blue-600 text-white shadow-lg">
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute inset-0 bg-blue-800 opacity-30"
              style={{
@@ -24,7 +26,14 @@ const Header = () => {
             <h2 className="text-lg text-blue-100 italic">Castello di Godego</h2>
           </div>
         </div>
-        <Navbar />
+        
+        <div className="flex flex-col md:flex-row items-start md:items-center space-y-3 md:space-y-0 md:space-x-4">
+          {/* Badge di stato delle allerte */}
+          <AlertStatusBadge />
+          
+          {/* Menu di navigazione */}
+          <Navbar />
+        </div>
       </div>
       
       {/* Nastro decorativo */}
