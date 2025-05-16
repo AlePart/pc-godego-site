@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/pc-godego-site/static/css/main.dc4d6ff2.css",
-    "main.js": "/pc-godego-site/static/js/main.351598d9.js",
+    "main.js": "/pc-godego-site/static/js/main.3a4c1a01.js",
     "index.html": "/pc-godego-site/index.html",
     "main.dc4d6ff2.css.map": "/pc-godego-site/static/css/main.dc4d6ff2.css.map",
-    "main.351598d9.js.map": "/pc-godego-site/static/js/main.351598d9.js.map"
+    "main.3a4c1a01.js.map": "/pc-godego-site/static/js/main.3a4c1a01.js.map"
   },
   "entrypoints": [
     "static/css/main.dc4d6ff2.css",
-    "static/js/main.351598d9.js"
+    "static/js/main.3a4c1a01.js"
   ]
 }
