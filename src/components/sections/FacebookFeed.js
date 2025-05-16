@@ -1,6 +1,8 @@
+// src/components/sections/FacebookFeed.js
 import React, { useState, useEffect } from 'react';
+import PlaceholderImage from '../common/PlaceholderImage';
 
-// Immagine di fallback incorporata direttamente come SVG
+// Componente di fallback per immagini integrato direttamente
 const FallbackImage = () => (
   <div className="bg-gray-200 rounded-md w-full h-48 flex items-center justify-center">
     <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -49,38 +51,9 @@ const FacebookFeed = () => {
       try {
         setLoading(true);
         
-        // Utilizza Facebook Graph API attraverso un proxy per evitare problemi CORS
-        // Nota: questo richiede un token di accesso valido e potrebbe necessitare di implementazione sul backend
-        const pageId = 'protezionecivilecastellodigodego';
-        const accessToken = 'YOUR_ACCESS_TOKEN'; // Dovresti gestire questo sul backend per sicurezza
-        const apiUrl = `https://graph.facebook.com/v18.0/${pageId}/posts?fields=message,created_time,full_picture,permalink_url&limit=5&access_token=${accessToken}`;
-        
-        // Prova a recuperare i post reali, se fallisce usa i placeholder
-        try {
-          const proxyUrl = 'https://corsproxy.io/?'; // Un proxy CORS pubblico (solo per test)
-          const response = await fetch(proxyUrl + encodeURIComponent(apiUrl));
-          const data = await response.json();
-          
-          if (data.data && Array.isArray(data.data)) {
-            // Trasforma i dati nel formato desiderato
-            const formattedPosts = data.data.map(post => ({
-              id: post.id,
-              date: formatDate(post.created_time),
-              content: post.message || '',
-              image: post.full_picture || null,
-              url: post.permalink_url
-            }));
-            
-            setPosts(formattedPosts);
-          } else {
-            throw new Error('Formato dati non valido');
-          }
-        } catch (apiError) {
-          console.warn('Non è stato possibile recuperare i post reali, uso i placeholder', apiError);
-          // Se non riesce a recuperare i post reali, usa i placeholder
-          setPosts(placeholderPosts);
-        }
-        
+        // In questa versione usiamo direttamente i placeholder
+        // poiché il fetching da Facebook richiede un backend
+        setPosts(placeholderPosts);
         setLoading(false);
       } catch (err) {
         console.error('Errore durante il recupero dei post:', err);
@@ -151,22 +124,22 @@ const FacebookFeed = () => {
                   
                   {/* Immagine del post (se presente) */}
                   {post.image ? (
-                    <div className="mb-4">
+                    <div className="mb-4 h-48">
                       <img 
                         src={post.image} 
                         alt="Immagine post" 
-                        className="w-full rounded-md"
+                        className="w-full h-full object-cover rounded-md"
                         onError={(e) => {
-                          // Nascondi l'immagine in caso di errore e mostra il componente di fallback
                           e.target.style.display = 'none';
-                          const fallbackEl = document.createElement('div');
-                          fallbackEl.className = 'bg-gray-200 rounded-md w-full h-48 flex items-center justify-center';
-                          fallbackEl.innerHTML = `
-                            <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                            </svg>
+                          const container = e.target.parentNode;
+                          // Renderizza PlaceholderImage come fallback
+                          container.innerHTML = `
+                            <div class="bg-gray-200 rounded-md w-full h-full flex items-center justify-center">
+                              <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                              </svg>
+                            </div>
                           `;
-                          e.target.parentNode.appendChild(fallbackEl);
                         }}
                       />
                     </div>

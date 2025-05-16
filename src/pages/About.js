@@ -1,7 +1,14 @@
+// src/pages/About.js
 import React from 'react';
 import { Link } from 'react-router-dom';
+import PlaceholderImage from '../components/common/PlaceholderImage';
 
 const About = () => {
+  // Funzione per generare pattern di sfondo
+  const generatePatternBg = (color = '#1e40af') => {
+    return `url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3z'%3E%3C/path%3E%3C/g%3E%3C/svg%3E")`;
+  };
+
   return (
     <div className="container mx-auto p-6 md:p-8">
       {/* Header della sezione */}
@@ -17,7 +24,11 @@ const About = () => {
       {/* Storia e Missione */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
         <div className="bg-white rounded-lg shadow-lg overflow-hidden transform hover:shadow-xl transition-all duration-300">
-          <div className="h-56 bg-cover bg-center" style={{backgroundImage: "url('https://via.placeholder.com/800x400')"}}></div>
+          <div className="h-56 bg-blue-600" style={{backgroundImage: generatePatternBg(), backgroundBlendMode: 'overlay'}}>
+            <div className="h-full w-full flex items-center justify-center text-white font-bold text-xl">
+              La Nostra Storia
+            </div>
+          </div>
           <div className="p-6">
             <h2 className="text-2xl font-bold text-blue-800 mb-4">La Nostra Storia</h2>
             <p className="text-gray-600 mb-4">
@@ -33,7 +44,11 @@ const About = () => {
         </div>
         
         <div className="bg-white rounded-lg shadow-lg overflow-hidden transform hover:shadow-xl transition-all duration-300">
-          <div className="h-56 bg-cover bg-center" style={{backgroundImage: "url('https://via.placeholder.com/800x400')"}}></div>
+          <div className="h-56 bg-green-600" style={{backgroundImage: generatePatternBg('#15803d'), backgroundBlendMode: 'overlay'}}>
+            <div className="h-full w-full flex items-center justify-center text-white font-bold text-xl">
+              La Nostra Missione
+            </div>
+          </div>
           <div className="p-6">
             <h2 className="text-2xl font-bold text-blue-800 mb-4">La Nostra Missione</h2>
             <p className="text-gray-600 mb-4">
@@ -59,7 +74,11 @@ const About = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {/* Membro 1 */}
           <div className="bg-white rounded-lg shadow-md overflow-hidden transform hover:shadow-lg transition-all duration-300">
-            <div className="h-48 bg-gray-200" style={{backgroundImage: "url('https://via.placeholder.com/300x300')", backgroundSize: 'cover', backgroundPosition: 'center'}}></div>
+            <div className="h-48 bg-blue-100 flex items-center justify-center">
+              <svg className="w-24 h-24 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+            </div>
             <div className="p-4 text-center">
               <h3 className="font-bold text-lg mb-1">Mario Rossi</h3>
               <p className="text-blue-600 text-sm mb-2">Coordinatore</p>
@@ -69,7 +88,11 @@ const About = () => {
           
           {/* Membro 2 */}
           <div className="bg-white rounded-lg shadow-md overflow-hidden transform hover:shadow-lg transition-all duration-300">
-            <div className="h-48 bg-gray-200" style={{backgroundImage: "url('https://via.placeholder.com/300x300')", backgroundSize: 'cover', backgroundPosition: 'center'}}></div>
+            <div className="h-48 bg-red-100 flex items-center justify-center">
+              <svg className="w-24 h-24 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+            </div>
             <div className="p-4 text-center">
               <h3 className="font-bold text-lg mb-1">Laura Bianchi</h3>
               <p className="text-blue-600 text-sm mb-2">Responsabile Formazione</p>
@@ -79,7 +102,11 @@ const About = () => {
           
           {/* Membro 3 */}
           <div className="bg-white rounded-lg shadow-md overflow-hidden transform hover:shadow-lg transition-all duration-300">
-            <div className="h-48 bg-gray-200" style={{backgroundImage: "url('https://via.placeholder.com/300x300')", backgroundSize: 'cover', backgroundPosition: 'center'}}></div>
+            <div className="h-48 bg-green-100 flex items-center justify-center">
+              <svg className="w-24 h-24 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+            </div>
             <div className="p-4 text-center">
               <h3 className="font-bold text-lg mb-1">Giovanni Verdi</h3>
               <p className="text-blue-600 text-sm mb-2">Responsabile Logistica</p>
@@ -89,7 +116,11 @@ const About = () => {
           
           {/* Membro 4 */}
           <div className="bg-white rounded-lg shadow-md overflow-hidden transform hover:shadow-lg transition-all duration-300">
-            <div className="h-48 bg-gray-200" style={{backgroundImage: "url('https://via.placeholder.com/300x300')", backgroundSize: 'cover', backgroundPosition: 'center'}}></div>
+            <div className="h-48 bg-yellow-100 flex items-center justify-center">
+              <svg className="w-24 h-24 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+            </div>
             <div className="p-4 text-center">
               <h3 className="font-bold text-lg mb-1">Anna Neri</h3>
               <p className="text-blue-600 text-sm mb-2">Responsabile Comunicazione</p>

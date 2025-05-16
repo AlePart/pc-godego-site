@@ -1,3 +1,4 @@
+// src/components/layout/Navbar.js
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 
@@ -55,6 +56,16 @@ const Navbar = () => {
             }
           >
             Attività
+          </NavLink>
+        </li>
+        <li>
+          <NavLink 
+            to="/allerte" 
+            className={({ isActive }) => 
+              `px-3 py-2 rounded-md hover:bg-blue-700 transition-colors duration-200 font-medium block ${isActive ? 'bg-blue-700' : ''}`
+            }
+          >
+            Allerte
           </NavLink>
         </li>
         <li>

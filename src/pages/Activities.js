@@ -1,3 +1,4 @@
+// src/pages/Activities.js
 import React from 'react';
 import EventCard from '../components/common/EventCard';
 
@@ -6,7 +7,7 @@ const Activities = () => {
   const upcomingEvents = [
     {
       id: 1,
-      image: 'https://via.placeholder.com/600/200',
+      image: null, // L'immagine sarà generata dal componente PlaceholderImage interno a EventCard
       date: '28 Maggio 2025',
       title: 'Corso Base di Primo Soccorso',
       description: 'Impara le tecniche base di primo soccorso con i nostri formatori certificati.',
@@ -15,7 +16,7 @@ const Activities = () => {
     },
     {
       id: 2,
-      image: 'https://via.placeholder.com/600/200',
+      image: null,
       date: '10 Giugno 2025',
       title: 'Prevenzione Rischio Idrogeologico',
       description: 'Workshop sulla prevenzione e gestione del rischio idrogeologico nel nostro territorio.',
@@ -24,7 +25,7 @@ const Activities = () => {
     },
     {
       id: 3,
-      image: 'https://via.placeholder.com/600/200',
+      image: null,
       date: '22 Giugno 2025',
       title: 'Giornata del Volontariato',
       description: 'Vieni a scoprire le attività della Protezione Civile e come diventare volontario.',
@@ -33,7 +34,7 @@ const Activities = () => {
     },
     {
       id: 4,
-      image: 'https://via.placeholder.com/600/200',
+      image: null,
       date: '5 Luglio 2025',
       title: 'Esercitazione Rischio Sismico',
       description: 'Esercitazione pratica sulle procedure da seguire in caso di terremoto.',
@@ -42,7 +43,7 @@ const Activities = () => {
     },
     {
       id: 5,
-      image: 'https://via.placeholder.com/600/200',
+      image: null,
       date: '18 Luglio 2025',
       title: 'Corso Antincendio Boschivo',
       description: 'Corso di formazione sulle tecniche di prevenzione e spegnimento incendi boschivi.',
@@ -51,7 +52,7 @@ const Activities = () => {
     },
     {
       id: 6,
-      image: 'https://via.placeholder.com/600/200',
+      image: null,
       date: '30 Luglio 2025',
       title: 'Simulazione di Emergenza',
       description: 'Attività di simulazione per testare il sistema di allerta e intervento locale.',
@@ -64,7 +65,7 @@ const Activities = () => {
   const pastActivities = [
     {
       id: 101,
-      image: 'https://via.placeholder.com/600/200',
+      image: null,
       date: 'Aprile 2025',
       title: 'Intervento Alluvione Fiume Brenta',
       description: 'Intervento di emergenza durante l\'alluvione del fiume Brenta.',
@@ -73,7 +74,7 @@ const Activities = () => {
     },
     {
       id: 102,
-      image: 'https://via.placeholder.com/600/200',
+      image: null,
       date: 'Marzo 2025',
       title: 'Giornata Ecologica',
       description: 'Pulizia e monitoraggio dei corsi d\'acqua e delle aree verdi del comune.',
@@ -82,7 +83,7 @@ const Activities = () => {
     },
     {
       id: 103,
-      image: 'https://via.placeholder.com/600/200',
+      image: null,
       date: 'Febbraio 2025',
       title: 'Incontro nelle Scuole',
       description: 'Formazione ai ragazzi delle scuole primarie sui comportamenti da tenere in caso di emergenza.',

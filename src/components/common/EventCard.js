@@ -1,8 +1,10 @@
+// src/components/common/EventCard.js
 import React from 'react';
 import { Link } from 'react-router-dom';
+import PlaceholderImage from './PlaceholderImage';
 
 const EventCard = ({ 
-  image = 'https://via.placeholder.com/600/200', 
+  image = null, 
   date = 'Prossimamente', 
   title = 'Evento',
   description = 'Descrizione evento',
@@ -30,7 +32,34 @@ const EventCard = ({
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden border border-blue-100 hover:shadow-lg transition-shadow duration-300">
-      <div className={`h-32 ${bgColorClass}`} style={{backgroundImage: `url('${image}')`, backgroundSize: 'cover'}}></div>
+      <div className={`h-32 ${bgColorClass}`}>
+        {image ? (
+          <img 
+            src={image} 
+            alt={title} 
+            className="w-full h-full object-cover"
+            onError={(e) => {
+              // In caso di errore, sostituisci con PlaceholderImage
+              e.target.style.display = 'none';
+              const parent = e.target.parentNode;
+              // Crea dinamicamente un placeholder in caso di errore
+              const placeholder = document.createElement('div');
+              placeholder.className = 'w-full h-full';
+              parent.appendChild(placeholder);
+              // Renderizza il componente placeholder (versione semplificata)
+              parent.style.backgroundColor = getComputedStyle(parent).backgroundColor;
+              parent.innerHTML = `<div class="h-full w-full flex items-center justify-center text-white font-semibold">${title}</div>`;
+            }}
+          />
+        ) : (
+          <PlaceholderImage 
+            width={600} 
+            height={200} 
+            text={title}
+            bgColor={window.getComputedStyle(document.documentElement).getPropertyValue(`--${colorClass}-600`) || '#4a90e2'}
+          />
+        )}
+      </div>
       <div className="p-4">
         <span className={`inline-block px-2 py-1 ${badgeColorClass} text-xs font-semibold rounded-md mb-2`}>{date}</span>
         <h3 className="font-bold text-lg mb-2">{title}</h3>

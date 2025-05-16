@@ -1,3 +1,4 @@
+// src/Router.js
 import React from 'react';
 import { Routes, Route, HashRouter } from 'react-router-dom';
 
@@ -6,6 +7,7 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Activities from './pages/Activities';
 import Contact from './pages/Contact';
+import AlertInfo from './pages/AlertInfo';
 
 // Componente AppRouter che contiene le rotte
 export const AppRouter = () => {
@@ -15,6 +17,7 @@ export const AppRouter = () => {
       <Route path="/chi-siamo" element={<About />} />
       <Route path="/attivita" element={<Activities />} />
       <Route path="/contatti" element={<Contact />} />
+      <Route path="/allerte" element={<AlertInfo />} />
       
       {/* Gestione fallback per gli URL non definiti */}
       <Route path="*" element={<Home />} />
