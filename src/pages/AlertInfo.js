@@ -8,7 +8,7 @@ import AlertTimeline from '../components/alerts/AlertTimeline';
 
 const AlertInfo = () => {
   // Stato per filtrare le allerte
-  const [filter, setFilter] = useState('all');
+  const [filter, setFilter] = useState('current');
 
   // Dati delle allerte attive (in un'applicazione reale, questi dati verrebbero da un'API)
   const currentAlerts = [
@@ -146,12 +146,12 @@ const AlertInfo = () => {
       </div>
 
       {/* Mappa delle allerte */}
-      <div className="mb-12">
+      {/* <div className="mb-12">
         <h2 className="text-2xl font-bold text-blue-800 mb-6">Mappa delle allerte in corso</h2>
         <div className="bg-white rounded-lg shadow-lg overflow-hidden">
           <AlertMap alerts={currentAlerts} />
         </div>
-      </div>
+      </div> */}
 
       {/* Filtri per le allerte */}
       <div className="mb-6 flex flex-wrap gap-2">
