@@ -1,36 +1,75 @@
-import React from 'react';
-import Navbar from './Navbar';
+import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 
-const Header = () => {
+const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
+  
   return (
-    <header className="relative z-10 bg-gradient-to-r from-blue-800 to-blue-600 text-white shadow-lg">
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute inset-0 bg-blue-800 opacity-30"
-             style={{
-               backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-               backgroundSize: '100px 100px'
-             }}>
-        </div>
-      </div>
-      <div className="container mx-auto p-6 flex flex-col md:flex-row md:items-center md:justify-between relative z-10">
-        <div className="flex items-center space-x-4 mb-4 md:mb-0">
-          <div className="flex-shrink-0 bg-white p-3 rounded-full shadow-md transform transition-transform duration-300 hover:scale-105">
-            <svg className="w-12 h-12 text-blue-600" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2L1 12h3v9h6v-6h4v6h6v-9h3L12 2z" />
-            </svg>
-          </div>
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight text-white drop-shadow-md">Protezione Civile</h1>
-            <h2 className="text-lg text-blue-100 italic">Castello di Godego</h2>
-          </div>
-        </div>
-        <Navbar />
-      </div>
+    <nav className="md:flex md:items-center">
+      {/* Hamburger menu per mobile */}
+      <button 
+        className="md:hidden text-white focus:outline-none mb-4"
+        onClick={toggleMenu}
+      >
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path 
+            strokeLinecap="round" 
+            strokeLinejoin="round" 
+            strokeWidth="2" 
+            d={isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"}
+          />
+        </svg>
+      </button>
       
-      {/* Nastro decorativo */}
-      <div className="h-4 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-400 shadow-inner"></div>
-    </header>
+      <ul className={`flex flex-col md:flex-row md:space-x-6 ${isOpen ? 'block' : 'hidden md:flex'}`}>
+        <li>
+          <NavLink 
+            to="/" 
+            className={({ isActive }) => 
+              `px-3 py-2 rounded-md hover:bg-blue-700 transition-colors duration-200 font-medium block ${isActive ? 'bg-blue-700' : ''}`
+            }
+            end
+          >
+            Home
+          </NavLink>
+        </li>
+        <li>
+          <NavLink 
+            to="/chi-siamo" 
+            className={({ isActive }) => 
+              `px-3 py-2 rounded-md hover:bg-blue-700 transition-colors duration-200 font-medium block ${isActive ? 'bg-blue-700' : ''}`
+            }
+          >
+            Chi Siamo
+          </NavLink>
+        </li>
+        <li>
+          <NavLink 
+            to="/attivita" 
+            className={({ isActive }) => 
+              `px-3 py-2 rounded-md hover:bg-blue-700 transition-colors duration-200 font-medium block ${isActive ? 'bg-blue-700' : ''}`
+            }
+          >
+            Attività
+          </NavLink>
+        </li>
+        <li>
+          <NavLink 
+            to="/contatti" 
+            className={({ isActive }) => 
+              `px-3 py-2 rounded-md hover:bg-blue-700 transition-colors duration-200 font-medium block ${isActive ? 'bg-blue-700' : ''}`
+            }
+          >
+            Contatti
+          </NavLink>
+        </li>
+      </ul>
+    </nav>
   );
 };
 
-export default Header;
+export default Navbar;

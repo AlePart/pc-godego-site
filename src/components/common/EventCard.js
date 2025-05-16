@@ -1,59 +1,48 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-const ContactInfo = () => {
+const EventCard = ({ 
+  image = 'https://via.placeholder.com/600/200', 
+  date = 'Prossimamente', 
+  title = 'Evento',
+  description = 'Descrizione evento',
+  link = '#',
+  colorClass = 'blue'
+}) => {
+  const colorVariants = {
+    blue: 'bg-blue-100 text-blue-800',
+    green: 'bg-green-100 text-green-800',
+    yellow: 'bg-yellow-100 text-yellow-800',
+    red: 'bg-red-100 text-red-800',
+    purple: 'bg-purple-100 text-purple-800'
+  };
+
+  const bgColorVariants = {
+    blue: 'bg-blue-600',
+    green: 'bg-green-600',
+    yellow: 'bg-yellow-600',
+    red: 'bg-red-600',
+    purple: 'bg-purple-600'
+  };
+
+  const badgeColorClass = colorVariants[colorClass] || colorVariants.blue;
+  const bgColorClass = bgColorVariants[colorClass] || bgColorVariants.blue;
+
   return (
-    <div className="space-y-6">
-      <div className="flex items-start space-x-3">
-        <div className="bg-blue-100 p-2 rounded-full">
-          <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-          </svg>
-        </div>
-        <div>
-          <h4 className="font-semibold text-blue-800">Sede Operativa</h4>
-          <p className="text-gray-600">Via Roma, 123<br/>Castello di Godego (TV)</p>
-        </div>
-      </div>
-      
-      <div className="flex items-start space-x-3">
-        <div className="bg-red-100 p-2 rounded-full">
-          <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-          </svg>
-        </div>
-        <div>
-          <h4 className="font-semibold text-blue-800">Contatti di Emergenza</h4>
-          <p className="font-bold text-2xl text-red-600">112</p>
-          <p className="text-gray-600">Numero unico emergenze</p>
-        </div>
-      </div>
-      
-      <div className="flex items-start space-x-3">
-        <div className="bg-green-100 p-2 rounded-full">
-          <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-          </svg>
-        </div>
-        <div>
-          <h4 className="font-semibold text-blue-800">Email</h4>
-          <p className="text-gray-600">protcivile.godego@esempio.it</p>
-        </div>
-      </div>
-      
-      <div className="flex items-start space-x-3">
-        <div className="bg-yellow-100 p-2 rounded-full">
-          <svg className="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        </div>
-        <div>
-          <h4 className="font-semibold text-blue-800">Orari Ufficio</h4>
-          <p className="text-gray-600">Lun-Ven: 9:00-12:00<br/>Sabato: 9:00-11:00</p>
-        </div>
+    <div className="bg-white rounded-lg shadow-md overflow-hidden border border-blue-100 hover:shadow-lg transition-shadow duration-300">
+      <div className={`h-32 ${bgColorClass}`} style={{backgroundImage: `url('${image}')`, backgroundSize: 'cover'}}></div>
+      <div className="p-4">
+        <span className={`inline-block px-2 py-1 ${badgeColorClass} text-xs font-semibold rounded-md mb-2`}>{date}</span>
+        <h3 className="font-bold text-lg mb-2">{title}</h3>
+        <p className="text-gray-600 text-sm mb-3">{description}</p>
+        {link.startsWith('/') ? (
+          <Link to={link} className="text-blue-600 hover:text-blue-800 text-sm font-medium">Scopri di più →</Link>
+        ) : (
+          <a href={link} className="text-blue-600 hover:text-blue-800 text-sm font-medium">Scopri di più →</a>
+        )}
       </div>
     </div>
   );
 };
 
-export default ContactInfo;
+export default EventCard;
