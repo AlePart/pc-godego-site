@@ -1,11 +1,10 @@
 import React from 'react';
-import { HashRouter as Router } from 'react-router-dom';
 import './App.css';
-import AppRouter from './Router';
+import { Router, AppRouter } from './Router';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 
-const ProtezioneCivileApp = ({ basename }) => {
+const ProtezioneCivileApp = () => {
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-b from-blue-50 to-white">
       {/* Background decorazione */}
