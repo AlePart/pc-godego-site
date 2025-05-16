@@ -1,4 +1,4 @@
-// src/components/alerts/AlertStatusBadge.js - Versione CORRETTA
+// src/components/alerts/AlertStatusBadge.js - Versione corretta
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAlerts } from '../../contexts/AlertContext';
@@ -103,22 +103,11 @@ const AlertStatusBadge = () => {
         </svg>
       </button>
       
-      {/* Popup con sommario delle allerte - CORREZIONE DEL BUG */}
+      {/* Popup con sommario delle allerte - VERSIONE CORRETTA RESPONSIVE */}
       {showPopup && (
-        <div 
-          className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg z-50"
-          style={{
-            // Assicuriamo che il popup sia posizionato correttamente
-            position: 'absolute',
-            right: 0,
-            top: '100%',
-            marginTop: '8px',
-            // Aumentiamo lo z-index per assicurarci che sia sopra tutti gli altri elementi
-            zIndex: 9999,
-            // Aggiungiamo un box-shadow più pronunciato
-            boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
-          }}
-        >
+        <div className="absolute  transform -translate-x-1 mt-2 w-[20rem] max-w-[90vw] bg-white rounded-lg shadow-lg overflow-y-auto z-50">
+
+
           <div className="p-4">
             <div className="flex justify-between items-center mb-2">
               <h4 className="font-bold text-gray-800">Stato Allerte</h4>
@@ -134,7 +123,7 @@ const AlertStatusBadge = () => {
             </div>
             
             {activeAlerts.length > 0 ? (
-              <div className="space-y-2 mb-3">
+              <div className="space-y-2 mb-3 max-h-60 overflow-y-auto">
                 {activeAlerts.map(alert => (
                   <div key={alert.id} className={`p-2 rounded-md border ${
                     alert.level === 'red' ? 'border-red-200 bg-red-50' :
